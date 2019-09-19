@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from "react";
 import { withFormik, Form, Field } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
 
-function NewUser ({values, errors, touched, status}) {
+function NewUser ({values, errors, touched, isSubmitting, status}) {
     const [users, setUsers] = useState ([]);
 
     useEffect(() => {
@@ -28,11 +30,14 @@ function NewUser ({values, errors, touched, status}) {
                     {touched.password && errors.password && (<p>{errors.password}</p>
                     )}
                 </div>
-                <label>
-                <Field type="checkbox" name ="check" checked={values.check} placeholder ="Terms of Service" />
+                <label>Accept Terms of Service:
+                <Field type="checkbox" name ="tos" checked={values.tos}  />
+                
                 </label>
-
-                <button>Submit</button>
+                {/* placeholder ="Terms of Service" */}
+                <div>
+                <button disabled={isSubmitting}>Submit</button>
+                </div>
             </Form>
 
             {users.map((things, index) => {
@@ -47,5 +52,48 @@ function NewUser ({values, errors, touched, status}) {
     );  
 }
 
+const FormikNewUser = withFormik({
+    mapPropsToValues({ name, email, password, checkbox}) {
+        return {
+            name: name || "",
+            email: email || "",
+            password: password || "",
+            checkbox: checkbox || false,
+        };
+    },
+
+    validationSchema: Yup.object().shape({
+        name: Yup.string()
+            .required("You Must Enter Your Name"),
+        email: Yup.string()
+            .email('Invalid Email')
+            .required("You Must Enter Your Email"),
+        password: Yup.string()
+            .min(6, "Password must be 6 or more characters!")
+            .required("You Must Enter A Password")
+    }),
+
+    handleSubmit(values, { resetForm, setErrors, setSubmitting, setStatus }) {
+        if (values.email === "") {
+            setErrors({ email: "That email is in use already" });
+        } else {
+            axios
+                .post("https://reqres.in/api/users", values)
+                .then(response => {
+                    setStatus(response.data); 
+                    resetForm();
+                    setSubmitting(false);
+                })
+                .catch(error => {
+                    console.log(error); 
+                    setSubmitting(false);
+                });
+        }
+    }
+}) (NewUser)
+
+console.log("THis is the HOC", FormikNewUser);
+
 export default FormikNewUser;
+
 
