@@ -9,10 +9,10 @@ const MegaForm = ({values, errors, touched, status }) => {
         if (status) {
             setUsers([...users, status]);
         }
-    }, [status, users])
+    }, [status])
 
     return (
-        <div>
+        <div className = 'mega-form'>
             <Form>
                 {touched.name && errors.name && (
                     <p className = 'error'>{errors.name}</p>
@@ -45,7 +45,7 @@ const MegaForm = ({values, errors, touched, status }) => {
                     <p className = 'error'>{errors.term}</p>
                 )}
                 <label>
-                    Agree with Terms of termsOfService
+                    Agree with Terms of Service
                     <Field type = 'checkbox' name ='termsOfService' checked={values.termsOfService} />
                 </label>
                 <button type = 'submit'>Join Team</button>
