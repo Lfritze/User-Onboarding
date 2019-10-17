@@ -51,12 +51,12 @@ const MegaForm = ({values, errors, touched, status }) => {
                 <button type = 'submit'>Join Team</button>
             </Form>
             {users.map(user => (
-                <div key={user.id}>
-                    <h2>Name: {user.name}</h2>
-                    <p>Email: {user.email}</p>
-                    <p>Password: {user.password}</p>
-                    <p>Role: {user.role}</p>
-                    </div>
+                <ul key={user.id}>
+                    <li>Name: {user.name}</li>
+                    <li>Email: {user.email}</li>
+                    <li>Password: {user.password}</li>
+                    <li>Role: {user.role}</li>
+                    </ul>
             ))}
         </div>
     )
