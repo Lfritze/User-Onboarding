@@ -1,5 +1,5 @@
 import React from 'react';
-import MegaForm from './components/Form';
+import MegaForm from './components/MegaForm';
 import './App.css';
 
 function App() {

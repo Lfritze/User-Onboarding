@@ -9,7 +9,7 @@ const MegaForm = ({values, errors, touched, status }) => {
         if (status) {
             setUsers([...users, status]);
         }
-    }, [status])
+    }, [status, users])
 
     return (
         <div>
@@ -52,10 +52,11 @@ const MegaForm = ({values, errors, touched, status }) => {
             </Form>
             {users.map(user => (
                 <div key={user.id}>
-                    <h1>Name: {user.name}</h1>
-                    <h1>Email: {user.name}</h1>
-                    <h1>Password: {user.name}</h1>
-                    <h1>Role: {user.name}</h1>
+                    <h2>Name: {user.name}</h2>
+                    <p>Email: {user.email}</p>
+                    <p>Password: {user.password}</p>
+                    <p>Role: {user.role}</p>
+                    </div>
             ))}
         </div>
     )
@@ -64,16 +65,32 @@ const MegaForm = ({values, errors, touched, status }) => {
 const FormikMegaForm = withFormik ({
     mapPropsToValues: (values) => {
         return {
-            name: values.name || '',
-            email: values.email || '',
-            password: values.password || '',
-            role: values.role || '',
+            name: values.name || "",
+            email: values.email || "",
+            password: values.password || "",
+            role: values.role || "",
             termsOfService: values.termsOfService || false,
         }  
     },
 
-    validationSchema: Yup
+    validationSchema: Yup.object().shape({
+        name: Yup.string().required('Name Required'),
+        email: Yup.string().required('Valid Email Required'),
+        password: Yup.string().min(6).required('Minimum Password Length is 6 Characters'),
+        role: Yup.string().required('Please Select a Role'),
+        termsOfService: Yup.bool().oneOf([true], 'Terms of Service Agreement Required')
+    }),
 
-})
+    handleSubmit(values, { setStatus }) {
+        axios
+        .post("https://reqres.in/api/users/", values)
+        .then(res => {
+            setStatus(res.data);
+        })
+        .catch(err => console.log(err.res));
+    }
+    
 
-// export default MegaForm;
+})(MegaForm);
+
+export default FormikMegaForm;
