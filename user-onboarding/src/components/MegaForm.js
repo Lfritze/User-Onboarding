@@ -13,32 +13,39 @@ const MegaForm = ({values, errors, touched, status }) => {
 
     return (
         <div className = 'mega-form'>
+            
             <Form>
                 {touched.name && errors.name && (
                     <p className = 'error'>{errors.name}</p>
                 )}
-                <Field type ='text' name = 'name' placeholder = 'Name' />
+                <div className = 'inputBox'>
+                    <Field type ='text' name = 'name' placeholder = 'Name' />
+                </div>
 
                 {touched.email && errors.email && (
                     <p className = 'error'>{errors.email}</p>
                 )}
-                <Field type ='email' name ='email' placeholder = 'Email' />
-
+                <div className = 'inputBox'>
+                    <Field type ='email' name ='email' placeholder = 'Email' />
+                </div>
                 {touched.password && errors.password && (
                     <p className = 'error'>{errors.password}</p>
                 )}
-                <Field type = 'password' name = 'password' placeholder = 'Password' />
+                <div className = 'inputBox'>
+                    <Field type = 'password' name = 'password' placeholder = 'Password' />
+                </div>
 
                 {touched.password && errors.role && (
                     <p className = 'error'>{errors.role}</p>
                 )}
-
+                
                 <Field component = 'select' name = 'role'>
                     <option value = '' disabled>Select a Role</option>
                     <option value = 'frontend-dev'>Frontend Dev</option>
                     <option value = 'backend-dev'>Backend Dev</option>
                     <option value = 'ux-designer'>UX Designer</option>
                     <option value = 'intern'>Intern</option>
+                
                 </Field>
 
                 {touched.termsOfService && errors.termsOfService && (
